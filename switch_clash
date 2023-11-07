@@ -1,0 +1,39 @@
+import requests
+import time
+
+# Clash API 信息
+api_url = 'http://127.0.0.1:57834'
+# 如果你设置了密钥，需要添加这行
+headers = {'Authorization': 'Bearer 219e2868-4edc-4fd5-9d6a-eee084cba6bb',
+           'Content-Type': 'application/json'}
+
+# 获取所有代理节点
+def get_proxies():
+    response = requests.get(f'{api_url}/proxies', headers=headers)
+    data = response.json()
+    return [name for name in data['proxies'] if data['proxies'][name]['type'] == 'Shadowsocks']
+
+# 获取所有代理组
+def get_proxy_groups():
+    response = requests.get(f'{api_url}/proxies', headers=headers)
+    data = response.json()
+    # 返回所有代理组名称
+    return [group for group in data['proxies'] if 'all' in data['proxies'][group]]
+
+# 切换代理节点
+def switch_proxy(proxy_name):
+    data = {'name': proxy_name}
+    response = requests.put(f'{api_url}/proxies/GLOBAL', headers=headers, json=data)
+    print(f'已切换代理节点： {proxy_name}: {response.status_code} - {response.text}')
+
+# 主函数
+def main():
+    #获取所有代理
+    proxy_names = get_proxies()
+    for name in proxy_names:
+        switch_proxy(name)
+        time.sleep(1)  # 等待1秒，以确保切换生效，这个等待时间可以根据实际情况调整
+
+# 运行主函数
+if __name__ == '__main__':
+    main()
