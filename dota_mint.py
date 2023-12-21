@@ -57,7 +57,7 @@ def main(num_transactions, mnemonic, receiver_address, amount):
 
 if __name__ == '__main__':
     # 设置参数
-    num_transactions = 10000
+    num_transactions = 10000    #mint数量
     mnemonic = ""  # 你的助记词
     receiver_address = ""  # 接收者的地址
     amount = 0  # 例如，转账 1 DOT（注意单位换算）
